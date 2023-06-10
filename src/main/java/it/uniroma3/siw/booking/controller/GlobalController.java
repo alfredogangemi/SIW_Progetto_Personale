@@ -1,7 +1,7 @@
 package it.uniroma3.siw.booking.controller;
 
-import it.uniroma3.siw.model.Credentials;
-import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.booking.model.Credentials;
+import it.uniroma3.siw.booking.service.CredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

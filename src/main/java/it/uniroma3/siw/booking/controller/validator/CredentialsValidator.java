@@ -1,8 +1,8 @@
 package it.uniroma3.siw.booking.controller.validator;
 
 import io.micrometer.common.util.StringUtils;
-import it.uniroma3.siw.model.Credentials;
-import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.booking.model.Credentials;
+import it.uniroma3.siw.booking.service.CredentialsService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

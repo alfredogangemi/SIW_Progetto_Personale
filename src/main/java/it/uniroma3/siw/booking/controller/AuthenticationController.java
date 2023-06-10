@@ -1,13 +1,11 @@
 package it.uniroma3.siw.booking.controller;
 
-import it.uniroma3.siw.controller.validator.CredentialsValidator;
-import it.uniroma3.siw.controller.validator.UserValidator;
-import it.uniroma3.siw.dto.MoviePreviewDto;
-import it.uniroma3.siw.model.Credentials;
-import it.uniroma3.siw.model.User;
-import it.uniroma3.siw.service.CredentialsService;
-import it.uniroma3.siw.service.MovieService;
-import it.uniroma3.siw.service.UserService;
+import it.uniroma3.siw.booking.controller.validator.CredentialsValidator;
+import it.uniroma3.siw.booking.controller.validator.UserValidator;
+import it.uniroma3.siw.booking.model.Credentials;
+import it.uniroma3.siw.booking.model.User;
+import it.uniroma3.siw.booking.service.CredentialsService;
+import it.uniroma3.siw.booking.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,21 +17,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Controller
 @Slf4j
 public class AuthenticationController {
 
     protected CredentialsService credentialsService;
     protected UserService userService;
-    protected MovieService movieService;
     protected UserValidator userValidator;
     protected CredentialsValidator credentialsValidator;
 
     @Autowired
-    public AuthenticationController(MovieService movieService, UserService userService, CredentialsService credentialsService, UserValidator userValidator, CredentialsValidator credentialsValidator) {
-        this.movieService = movieService;
+    public AuthenticationController(UserService userService, CredentialsService credentialsService, UserValidator userValidator, CredentialsValidator credentialsValidator) {
         this.userService = userService;
         this.credentialsService = credentialsService;
         this.userValidator = userValidator;
@@ -54,25 +48,6 @@ public class AuthenticationController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
-        List<MoviePreviewDto> latestMovies = movieService.getLastMoviesPreviews();
-        List<MoviePreviewDto> topRatedMovies = movieService.getTopRatedMovies();
-        model.addAttribute("latestMovies", latestMovies);
-        model.addAttribute("topRatedMovies", topRatedMovies);
-        /*
-        Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            return "index.html";
-        } else {
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                    .getAuthentication()
-                    .getPrincipal();
-            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-            if (credentials.getRole()
-                    .equals(Credentials.ADMIN_ROLE)) {
-                return "admin/indexAdmin.html";
-            }
-        }*/
         return "index";
     }
 

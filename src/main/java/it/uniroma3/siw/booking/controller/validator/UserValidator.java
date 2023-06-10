@@ -1,8 +1,8 @@
 package it.uniroma3.siw.booking.controller.validator;
 
 import io.micrometer.common.util.StringUtils;
-import it.uniroma3.siw.model.User;
-import it.uniroma3.siw.service.UserService;
+import it.uniroma3.siw.booking.model.User;
+import it.uniroma3.siw.booking.service.UserService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;

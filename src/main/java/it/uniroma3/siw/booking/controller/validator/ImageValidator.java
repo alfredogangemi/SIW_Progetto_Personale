@@ -1,6 +1,6 @@
 package it.uniroma3.siw.booking.controller.validator;
 
-import it.uniroma3.siw.model.Artist;
+import it.uniroma3.siw.booking.model.Image;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import java.util.Objects;
 public class ImageValidator implements Validator {
 
 
-    @Value("${siwmovie.image.maxFileSize:#{300000}}")
+    @Value("${siwbooking.image.maxFileSize:#{300000}}")
     private Long maxImageFileSize;
 
 
@@ -31,7 +31,7 @@ public class ImageValidator implements Validator {
 
     @Override
     public boolean supports(@NonNull Class<?> aClass) {
-        return Artist.class.equals(aClass);
+        return Image.class.equals(aClass);
     }
 
     /**

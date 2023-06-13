@@ -36,7 +36,6 @@ public class GlobalController {
     @ModelAttribute("role")
     public String getRole() {
         String role = "";
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

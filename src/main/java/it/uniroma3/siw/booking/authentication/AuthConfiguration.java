@@ -58,8 +58,7 @@ public class AuthConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-                .requestMatchers(HttpMethod.GET, "/", "/index", "/signUp", "/css/**", "/images/**", "favicon.ico", "js/**", "searchArtist",
-                        "searchMovie", "movie/{id}", "artist/{id}")
+                .requestMatchers(HttpMethod.GET, "/", "/index", "/signUp", "header.html", "favicon.ico", "js/**")
                 .permitAll()
                 // chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register
                 .requestMatchers(HttpMethod.POST, "/register", "/login")

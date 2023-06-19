@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -17,10 +18,11 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd") //formato utile per thymeleaf
-    private LocalDate date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") //formato utile per thymeleaf
+    private LocalDateTime date;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private Image image;
@@ -29,10 +31,23 @@ public class Event {
 
     private Double price;
 
+
     //TODO -> Set di prenotazioni
 
 
 
-    //TODO -> Equals e hashcode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id) && Objects.equals(name, event.name) && Objects.equals(date, event.date);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, date);
+    }
 }

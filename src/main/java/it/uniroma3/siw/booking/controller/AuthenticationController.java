@@ -27,7 +27,8 @@ public class AuthenticationController {
     protected CredentialsValidator credentialsValidator;
 
     @Autowired
-    public AuthenticationController(UserService userService, CredentialsService credentialsService, UserValidator userValidator, CredentialsValidator credentialsValidator) {
+    public AuthenticationController(UserService userService, CredentialsService credentialsService, UserValidator userValidator,
+            CredentialsValidator credentialsValidator) {
         this.userService = userService;
         this.credentialsService = credentialsService;
         this.userValidator = userValidator;
@@ -53,16 +54,19 @@ public class AuthenticationController {
 
     @GetMapping(value = "/success")
     public String defaultAfterLogin(Model model) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("Executing login...");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
         return index(model);
     }
 
     @PostMapping(value = {"/register"})
     public String registerUser(@ModelAttribute("user") User user,
-                               BindingResult bindingResult,
-                               @ModelAttribute("credentials") Credentials credentials,
-                               Model model) {
+            BindingResult bindingResult,
+            @ModelAttribute("credentials") Credentials credentials,
+            Model model) {
         userValidator.validate(user, bindingResult);
         credentialsValidator.validate(credentials, bindingResult);
         if (bindingResult.hasErrors()) {

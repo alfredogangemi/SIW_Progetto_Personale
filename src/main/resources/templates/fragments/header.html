@@ -31,7 +31,7 @@
                             <a class="nav-link active" aria-current="page" href="/addEvent">Aggiungi Nuovo Evento</a>
                         </li>
                         <li th:if="${userDetails}" class="nav-item">
-                            <a class="nav-link active" href="#">Le tue prenotazioni</a>
+                            <a class="nav-link active" href="/myReservations">Le tue prenotazioni</a>
                         </li>
                         <li th:if="${userDetails}" class="nav-item">
                             <a th:text="${userDetails.username}" class="nav-link" href="/logout"></a>

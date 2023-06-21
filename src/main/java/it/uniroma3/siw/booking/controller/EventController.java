@@ -32,13 +32,13 @@ public class EventController {
     }
 
 
-    @GetMapping(value = "/addEvent")
+    @GetMapping(value = "/admin/addEvent")
     public String formNewArtist(Model model) {
         model.addAttribute("event", new Event());
         return "admin/addEvent";
     }
 
-    @PostMapping("/createEvent")
+    @PostMapping("/admin/createEvent")
     public String createNewArtist(@Validated @ModelAttribute("event") Event event, @RequestParam("imageFile") MultipartFile file, Model model,
             BindingResult bindingResult) {
         eventValidator.validate(event, bindingResult);
@@ -84,9 +84,10 @@ public class EventController {
         return "events";
     }
 
-    @PostMapping("/event/delete")
+    @PostMapping("/admin/event/delete")
     public String delete(@ModelAttribute("id") Long id) {
         if (id != null && eventService.existsById(id)) {
+            //TODO -> Eliminare tutte le prenotazioni annesse?
             eventService.deleteById(id);
         } else {
             log.warn("Errore durante l'emininazione dell'evento con id {}", id);
@@ -95,7 +96,7 @@ public class EventController {
     }
 
 
-    @PostMapping("/updateEvent")
+    @PostMapping("/admin/updateEvent")
     public String updateEvent(@Validated @ModelAttribute("event") Event event, @RequestParam("imageFile") MultipartFile file, Model model,
             BindingResult bindingResult, @ModelAttribute("id") Long id) {
         if (id != null && !eventService.existsById(id)) {
@@ -132,7 +133,7 @@ public class EventController {
     }
 
 
-    @GetMapping("/event/edit/{id}")
+    @GetMapping("/admin/event/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Event event = eventService.findEventById(id);
         model.addAttribute("event", event);

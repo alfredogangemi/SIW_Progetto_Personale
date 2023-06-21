@@ -31,11 +31,6 @@ public class Event {
 
     private Double price;
 
-
-    //TODO -> Set di prenotazioni
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o)

@@ -10,4 +10,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 
     @Query(value = "SELECT * FROM event WHERE date >= CURRENT_DATE ORDER BY date", nativeQuery = true)
     List<Event> findAllByDateAfterOrDateEquals();
+
+    @Query(value = "SELECT * FROM event WHERE date >= CURRENT_DATE ORDER BY date limit 3", nativeQuery = true)
+    List<Event> findIncomingEvents();
 }

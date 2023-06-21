@@ -28,13 +28,15 @@
                             <a class="nav-link active" aria-current="page" href="/searchEvents">Consulta Eventi</a>
                         </li>
                         <li th:if="${#strings.equalsIgnoreCase(role, 'ADMIN')}" class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/addEvent">Aggiungi Nuovo Evento</a>
+                            <a class="nav-link active" aria-current="page" href="/admin/addEvent">Aggiungi Nuovo
+                                Evento</a>
                         </li>
-                        <li th:if="${userDetails}" class="nav-item">
+                        <li th:unless="${#strings.equalsIgnoreCase(role, 'ADMIN')}" th:if="${userDetails}"
+                            class="nav-item">
                             <a class="nav-link active" href="/myReservations">Le tue prenotazioni</a>
                         </li>
                         <li th:if="${userDetails}" class="nav-item">
-                            <a th:text="${userDetails.username}" class="nav-link" href="/logout"></a>
+                            <a th:text="${userDetails.username}" class="nav-link" href=""></a>
                         </li>
                         <li th:if="${userDetails}" class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>

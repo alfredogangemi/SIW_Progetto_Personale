@@ -15,7 +15,7 @@
         <div class="p-5 text-center bg-body-tertiary rounded-3">
             <h3 class="text-body-emphasis m-3">Crea Nuovo Evento</h3>
             <br>
-            <form th:action="@{/createEvent}" method="POST" enctype="multipart/form-data" th:object="${event}">
+            <form th:action="@{/admin/createEvent}" method="POST" enctype="multipart/form-data" th:object="${event}">
                 <div th:if="${#fields.hasGlobalErrors()}">
                     <p style="font-weight: bold;" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
                 </div>

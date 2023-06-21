@@ -2,9 +2,11 @@ package it.uniroma3.siw.booking.controller;
 
 import it.uniroma3.siw.booking.controller.validator.CredentialsValidator;
 import it.uniroma3.siw.booking.controller.validator.UserValidator;
+import it.uniroma3.siw.booking.dto.EventPreviewDto;
 import it.uniroma3.siw.booking.model.Credentials;
 import it.uniroma3.siw.booking.model.User;
 import it.uniroma3.siw.booking.service.CredentialsService;
+import it.uniroma3.siw.booking.service.EventService;
 import it.uniroma3.siw.booking.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 public class AuthenticationController {
@@ -25,14 +29,17 @@ public class AuthenticationController {
     protected UserService userService;
     protected UserValidator userValidator;
     protected CredentialsValidator credentialsValidator;
+    protected EventService eventService;
+
 
     @Autowired
     public AuthenticationController(UserService userService, CredentialsService credentialsService, UserValidator userValidator,
-            CredentialsValidator credentialsValidator) {
+            CredentialsValidator credentialsValidator, EventService eventService) {
         this.userService = userService;
         this.credentialsService = credentialsService;
         this.userValidator = userValidator;
         this.credentialsValidator = credentialsValidator;
+        this.eventService = eventService;
     }
 
     @GetMapping(value = "/signUp")
@@ -49,6 +56,8 @@ public class AuthenticationController {
 
     @GetMapping(value = "/")
     public String index(Model model) {
+        List<EventPreviewDto> incomingEvents = eventService.getIncomingEventsPreviews();
+        model.addAttribute("incomingEvents", incomingEvents);
         return "index";
     }
 

@@ -6,12 +6,15 @@ import it.uniroma3.siw.booking.model.Reservation;
 import it.uniroma3.siw.booking.model.User;
 import it.uniroma3.siw.booking.service.EventService;
 import it.uniroma3.siw.booking.service.ReservationService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -20,14 +23,16 @@ import java.time.LocalDateTime;
 @Slf4j
 public class ReservationController {
 
-
-    private final EventService eventService;
-    private final GlobalController globalController;
-    private final ReservationService reservationService;
+    protected final HttpServletRequest request;
+    protected final EventService eventService;
+    protected final GlobalController globalController;
+    protected final ReservationService reservationService;
 
 
     @Autowired
-    public ReservationController(ReservationService reservationService, EventService eventService, GlobalController globalController) {
+    public ReservationController(HttpServletRequest request, ReservationService reservationService, EventService eventService,
+            GlobalController globalController) {
+        this.request = request;
         this.reservationService = reservationService;
         this.eventService = eventService;
         this.globalController = globalController;
@@ -65,6 +70,26 @@ public class ReservationController {
         model.addAttribute("reservations", reservationService.findIncomingReservationsByUser(user));
         model.addAttribute("pastReservations", reservationService.findOldReservationsByUser(user));
         return "myReservations";
+    }
+
+
+    @GetMapping("/admin/manageReservations/{eventId}")
+    public String myReservations(@PathVariable("eventId") Long id, Model model) {
+        Event event = eventService.findEventById(id);
+        model.addAttribute("reservations", reservationService.findReservationsByEvent(event));
+        return "admin/manageReservations";
+    }
+
+
+    @PostMapping("/unsubscribe")
+    public String delete(@ModelAttribute("reservationId") Long id) {
+        if (id != null && reservationService.existsById(id)) {
+            reservationService.deleteById(id);
+        } else {
+            log.warn("Errore durante l'emininazione della prenotazione con id {}", id);
+        }
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 
 

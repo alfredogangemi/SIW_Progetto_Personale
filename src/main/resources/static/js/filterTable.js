@@ -1,6 +1,7 @@
-function filterTable(tableId) {
+function filterTable(tableId, inputTagId) {
     let input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("searchInput");
+    input = document.getElementById(inputTagId);
+
     filter = input.value.toUpperCase();
     table = document.getElementById(tableId);
     tr = table.getElementsByTagName("tr");

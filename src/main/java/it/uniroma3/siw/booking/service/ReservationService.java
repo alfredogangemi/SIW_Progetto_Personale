@@ -50,7 +50,20 @@ public class ReservationService {
     }
 
     @Transactional
+    public List<Reservation> findReservationsByEvent(Event event) {
+        return reservationRepository.findAllByEvent(event);
+    }
+
+    @Transactional
     public List<Reservation> findOldReservationsByUser(User user) {
         return reservationRepository.findReservationsByUserAndEventDateBefore(user, LocalDateTime.now());
+    }
+
+    public boolean existsById(Long id) {
+        return reservationRepository.existsById(id);
+    }
+
+    public void deleteById(Long id) {
+        reservationRepository.deleteById(id);
     }
 }

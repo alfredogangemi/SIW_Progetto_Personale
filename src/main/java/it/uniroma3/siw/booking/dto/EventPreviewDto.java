@@ -8,11 +8,20 @@ import lombok.Data;
 public class EventPreviewDto {
 
     private Long id;
-    private String title;
+    private String name;
     private String imageSrc;
-    private Double vote;
+    private String description;
 
     public EventPreviewDto(Event event) {
-        //TODO
+        this.id = event.getId();
+        this.name = event.getName();
+        this.description = event.getDescription();
+        if (this.description.length() > 80) {
+            this.description = description.substring(0, 73) + "...";
+        }
+        if (event.getImage() != null) {
+            this.imageSrc = event.getImage()
+                    .generateHtmlSource();
+        }
     }
 }

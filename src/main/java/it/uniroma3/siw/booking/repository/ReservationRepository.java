@@ -23,4 +23,6 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
 
     @Query("SELECT r FROM Reservation r WHERE r.user = :user AND r.event.date < :currentDate")
     List<Reservation> findReservationsByUserAndEventDateBefore(@Param("user") User user, @Param("currentDate") LocalDateTime currentDate);
+
+    List<Reservation> findAllByEvent(Event event);
 }

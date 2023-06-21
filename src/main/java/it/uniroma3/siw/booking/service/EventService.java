@@ -1,5 +1,6 @@
 package it.uniroma3.siw.booking.service;
 
+import it.uniroma3.siw.booking.dto.EventPreviewDto;
 import it.uniroma3.siw.booking.model.Event;
 import it.uniroma3.siw.booking.model.Image;
 import it.uniroma3.siw.booking.repository.EventRepository;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,4 +78,14 @@ public class EventService {
         event.setImage(oldImage);
         eventRepository.save(event);
     }
+
+
+    @Transactional
+    public List<EventPreviewDto> getIncomingEventsPreviews() {
+        List<EventPreviewDto> latestEvents = new LinkedList<>();
+        eventRepository.findIncomingEvents()
+                .forEach(event -> latestEvents.add(new EventPreviewDto(event)));
+        return latestEvents;
+    }
+
 }

@@ -30,7 +30,7 @@
                 <label id="numberOfParticipants" th:text="${event.numberOfPartecipants}"></label>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-bold" for="price">Prezzo</label>
+                <label class="form-label fw-bold" for="price">Prezzo:</label>
                 <label id="price" th:text="${event.price} + ' €'"></label>
             </div>
             <div th:if="${event.image != null}" class="mt-3">

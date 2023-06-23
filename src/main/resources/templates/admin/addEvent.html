@@ -13,43 +13,46 @@
 <div class="container my-5">
     <div class="row">
         <div class="p-5 text-center bg-body-tertiary rounded-3">
-            <h3 class="text-body-emphasis m-3">Crea Nuovo Evento</h3>
-            <br>
-            <form th:action="@{/admin/createEvent}" method="POST" enctype="multipart/form-data" th:object="${event}">
-                <div th:if="${#fields.hasGlobalErrors()}">
-                    <p style="font-weight: bold;" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="name">Nome</label>
-                    <input class="form-control" type="text" id="name" required th:field="${event.name}"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="description">Descrizione</label>
-                    <textarea class="form-control" id="description" rows="8" required
-                              th:field="${event.description}"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="date">Data</label>
-                    <input class="form-control" type="datetime-local" id="date" required th:field="${event.date}"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="numberOfParticipants">Numero di Partecipanti</label>
-                    <input class="form-control" type="number" id="numberOfParticipants" required
-                           th:field="${event.numberOfPartecipants}"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="price">Prezzo</label>
-                    <input class="form-control" type="number" step="0.01" id="price"
-                           th:field="${event.price}"/>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="image">Immagine</label>
-                    <input class="form-control" type="file" id="image" accept="image/jpeg, image/gif, image/png"
-                           name="imageFile"/>
-                </div>
+            <div style="max-width: 700px; margin: 0 auto;">
+                <h3 class="text-body-emphasis m-3">Crea Nuovo Evento</h3>
                 <br>
-                <button type="submit" class="btn btn-primary btn-submit">Crea Evento</button>
-            </form>
+                <form th:action="@{/admin/createEvent}" method="POST" enctype="multipart/form-data"
+                      th:object="${event}">
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p style="font-weight: bold;" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Nome</label>
+                        <input class="form-control" type="text" id="name" required th:field="${event.name}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Descrizione</label>
+                        <textarea class="form-control" id="description" rows="8" required
+                                  th:field="${event.description}"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="date">Data</label>
+                        <input class="form-control" type="datetime-local" id="date" required th:field="${event.date}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="numberOfParticipants">Numero di Partecipanti</label>
+                        <input class="form-control" type="number" id="numberOfParticipants" required
+                               th:field="${event.numberOfPartecipants}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="price">Prezzo</label>
+                        <input class="form-control" type="number" step="0.01" id="price"
+                               th:field="${event.price}"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="image">Immagine</label>
+                        <input class="form-control" type="file" id="image" accept="image/jpeg, image/gif, image/png"
+                               name="imageFile"/>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-submit">Crea Evento</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

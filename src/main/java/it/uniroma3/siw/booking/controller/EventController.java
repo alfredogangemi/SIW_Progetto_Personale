@@ -135,10 +135,12 @@ public class EventController {
 
     @GetMapping("/admin/event/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
+        log.info("Redirecting to edit form for event with ID {}", id);
         Event event = eventService.findEventById(id);
         model.addAttribute("event", event);
         return "admin/updateEvent";
     }
+
 
 
     @GetMapping("/removeImageFromEvent/{eventId}")

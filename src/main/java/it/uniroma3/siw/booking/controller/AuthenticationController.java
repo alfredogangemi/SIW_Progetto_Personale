@@ -67,7 +67,7 @@ public class AuthenticationController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+        log.info("User {} successfully logged in.", userDetails.getUsername());
         return index(model);
     }
 

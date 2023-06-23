@@ -20,9 +20,9 @@ import java.io.IOException;
 @Slf4j
 public class EventController {
 
-    private final EventService eventService;
-    private final ImageValidator imageValidator;
-    private final EventValidator eventValidator;
+    protected final EventService eventService;
+    protected final ImageValidator imageValidator;
+    protected final EventValidator eventValidator;
 
     @Autowired
     public EventController(EventService eventService, ImageValidator imageValidator, EventValidator eventValidator) {

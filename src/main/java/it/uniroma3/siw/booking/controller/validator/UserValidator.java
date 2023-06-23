@@ -23,25 +23,32 @@ public class UserValidator implements Validator {
     }
 
     @Override
-    public void validate(@NonNull Object o, @NonNull Errors errors) {
-        User user = (User) o;
+    public void validate(@NonNull Object target, @NonNull Errors errors) {
+        User user = (User) target;
+        log.debug("Starting user validation...");
         if (StringUtils.isBlank(user.getName())) {
+            log.debug("User name is empty");
             errors.reject("user.empty.name");
             return;
         }
         if (StringUtils.isBlank(user.getSurname())) {
+            log.debug("User surname is empty");
             errors.reject("user.empty.surname");
             return;
         }
         if (StringUtils.isBlank(user.getEmail())) {
+            log.debug("User email is empty");
             errors.reject("user.empty.email");
-        } else if (!EmailValidator.getInstance().isValid(user.getEmail())) {
+        } else if (!EmailValidator.getInstance()
+                .isValid(user.getEmail())) {
+            log.debug("User email is not valid");
             errors.reject("user.not.valid.email");
         } else if (userService.existsByEmail(user.getEmail())) {
+            log.debug("User with this email already exists");
             errors.reject("user.with.this.email.already.present");
         }
-
     }
+
 
     @Override
     public boolean supports(@NonNull Class<?> aClass) {

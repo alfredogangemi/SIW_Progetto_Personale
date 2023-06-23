@@ -25,20 +25,30 @@ public class CredentialsValidator implements Validator {
     public void validate(@NonNull Object o, @NonNull Errors errors) {
         Credentials credentials = (Credentials) o;
         if (StringUtils.isBlank(credentials.getUsername())) {
+            log.warn("Empty username field in user registration");
             errors.reject("user.empty.username");
             return;
-        } else if (credentials.getUsername().length() < 5) {
+        }
+        if (credentials.getUsername()
+                .length() < 5) {
+            log.warn("Username {} is too short in user registration", credentials.getUsername());
             errors.reject("user.username.too.short");
-        } else if (credentialsService.existsByUsername(credentials.getUsername())) {
+        }
+        if (credentialsService.existsByUsername(credentials.getUsername())) {
+            log.warn("Username {} already exists in user registration", credentials.getUsername());
             errors.reject("user.username.already.present");
         }
         if (StringUtils.isBlank(credentials.getPassword())) {
+            log.warn("Empty password field in user registration");
             errors.reject("user.empty.password");
-        } else if (credentials.getPassword().length() < 8) {
+        }
+        if (credentials.getPassword()
+                .length() < 8) {
+            log.warn("Password is too short in user registration");
             errors.reject("user.password.too.short");
         }
-
     }
+
 
     @Override
     public boolean supports(@NonNull Class<?> aClass) {

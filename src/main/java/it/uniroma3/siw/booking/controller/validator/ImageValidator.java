@@ -2,6 +2,7 @@ package it.uniroma3.siw.booking.controller.validator;
 
 import it.uniroma3.siw.booking.model.Image;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -12,22 +13,27 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Objects;
 
 @Component
+@Slf4j
 public class ImageValidator implements Validator {
 
 
     @Value("${siwbooking.image.maxFileSize:#{300000}}")
-    private Long maxImageFileSize;
+    protected Long maxImageFileSize;
 
 
     @Override
-    public void validate(@NonNull Object o, @NonNull Errors errors) {
-        MultipartFile file = (MultipartFile) o;
+    public void validate(@NonNull Object target, @NonNull Errors errors) {
+        MultipartFile file = (MultipartFile) target;
+        log.debug("Starting image file validation...");
         if (!isImage(file)) {
+            log.debug("Uploaded file is not a valid image");
             errors.reject("artist.upload.file.is.not.a.valid.image");
         } else if (file.getSize() > maxImageFileSize) {
+            log.debug("Uploaded image file exceeds the maximum size");
             errors.reject("image.upload.file.exceeds.max.size");
         }
     }
+
 
     @Override
     public boolean supports(@NonNull Class<?> aClass) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class GlobalController {
 
 
-    private final CredentialsService credentialsService;
+    protected final CredentialsService credentialsService;
 
     @Autowired
     public GlobalController(CredentialsService credentialsService) {

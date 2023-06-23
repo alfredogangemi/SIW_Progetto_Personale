@@ -1,7 +1,6 @@
 package it.uniroma3.siw.booking.controller;
 
 import it.uniroma3.siw.booking.model.Credentials;
-import it.uniroma3.siw.booking.model.User;
 import it.uniroma3.siw.booking.service.CredentialsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -21,7 +20,7 @@ public class GlobalController {
     public GlobalController(CredentialsService credentialsService) {
         this.credentialsService = credentialsService;
     }
-    
+
     @ModelAttribute("userDetails")
     public UserDetails getUser() {
         UserDetails user = null;
@@ -52,12 +51,5 @@ public class GlobalController {
     }
 
 
-    public User getCurrentUser() {
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        Credentials credentials = credentialsService.getCredentials(user.getUsername());
-        return credentials.getUser();
-    }
 
 }

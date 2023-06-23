@@ -18,10 +18,8 @@ public class Reservation {
 
     @OneToOne
     private User user;
-
     @OneToOne
     private Event event;
-    
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDate;
 

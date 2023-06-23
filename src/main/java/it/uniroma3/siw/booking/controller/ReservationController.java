@@ -25,17 +25,17 @@ public class ReservationController {
 
     protected final HttpServletRequest request;
     protected final EventService eventService;
-    protected final GlobalController globalController;
+    protected final AuthenticationController authenticationController;
     protected final ReservationService reservationService;
 
 
     @Autowired
     public ReservationController(HttpServletRequest request, ReservationService reservationService, EventService eventService,
-            GlobalController globalController) {
+            AuthenticationController authenticationController) {
         this.request = request;
         this.reservationService = reservationService;
         this.eventService = eventService;
-        this.globalController = globalController;
+        this.authenticationController = authenticationController;
     }
 
 
@@ -43,7 +43,7 @@ public class ReservationController {
     @GetMapping("/subscribe/{eventId}")
     public String subscribe(@PathVariable("eventId") Long id, RedirectAttributes redirectAttributes) {
         Event event = eventService.findEventById(id);
-        User user = globalController.getCurrentUser();
+        User user = authenticationController.getCurrentUser();
         if (reservationService.existByUserAndEvent(user, event)) {
             log.info("Prenotazione all'evento {} già presente per l'utente {}", event.getName(), event.getId());
             redirectAttributes.addFlashAttribute("errorMessage", "Hai già effettuato una prenotazione per questo evento.");
@@ -66,7 +66,7 @@ public class ReservationController {
 
     @GetMapping("/myReservations")
     public String myReservations(Model model) {
-        User user = globalController.getCurrentUser();
+        User user = authenticationController.getCurrentUser();
         model.addAttribute("reservations", reservationService.findIncomingReservationsByUser(user));
         model.addAttribute("pastReservations", reservationService.findOldReservationsByUser(user));
         return "myReservations";

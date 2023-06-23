@@ -87,4 +87,12 @@ public class AuthenticationController {
         model.addAttribute("user", user);
         return "signUpSuccessfully";
     }
+
+    public User getCurrentUser() {
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        Credentials credentials = credentialsService.getCredentials(user.getUsername());
+        return credentials.getUser();
+    }
 }

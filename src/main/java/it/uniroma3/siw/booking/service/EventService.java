@@ -87,5 +87,8 @@ public class EventService {
                 .forEach(event -> latestEvents.add(new EventPreviewDto(event)));
         return latestEvents;
     }
-    
+
+    public Iterable<Event> findAll() {
+        return eventRepository.findAll();
+    }
 }

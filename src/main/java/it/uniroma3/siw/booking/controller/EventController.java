@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
+import static it.uniroma3.siw.booking.model.Credentials.ADMIN_ROLE;
+
 @Controller
 @Slf4j
 public class EventController {
@@ -26,14 +28,16 @@ public class EventController {
     protected final ReservationService reservationService;
     protected final ImageValidator imageValidator;
     protected final EventValidator eventValidator;
+    protected final GlobalController globalController;
 
     @Autowired
     public EventController(EventService eventService, ReservationService reservationService, ImageValidator imageValidator,
-            EventValidator eventValidator) {
+            EventValidator eventValidator, GlobalController globalController) {
         this.eventService = eventService;
         this.reservationService = reservationService;
         this.imageValidator = imageValidator;
         this.eventValidator = eventValidator;
+        this.globalController = globalController;
     }
 
 
@@ -84,7 +88,13 @@ public class EventController {
 
     @GetMapping("/searchEvents")
     public String events(Model model) {
-        Iterable<Event> events = eventService.findAllByDateAfter();
+        String role = globalController.getRole();
+        Iterable<Event> events;
+        if (ADMIN_ROLE.equals(role)) {
+            events = eventService.findAll(); //admin visualizza anche gli eventi passati
+        } else {
+            events = eventService.findAllByDateAfter();
+        }
         model.addAttribute("events", events);
         return "events";
     }

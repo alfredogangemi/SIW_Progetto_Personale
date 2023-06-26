@@ -16,7 +16,8 @@
             <div style="max-width: 700px; margin: 0 auto;">
                 <h3 class="text-body-emphasis m-3">Modifica Evento</h3>
                 <br>
-                <form th:action="@{/updateEvent}" method="POST" enctype="multipart/form-data" th:object="${event}">
+                <form th:action="@{/admin/updateEvent}" method="POST" enctype="multipart/form-data"
+                      th:object="${event}">
                     <input type="hidden" th:field="*{id}"/>
                     <div th:if="${#fields.hasGlobalErrors()}">
                         <p style="font-weight: bold;" th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p>

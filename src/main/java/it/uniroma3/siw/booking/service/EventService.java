@@ -87,5 +87,5 @@ public class EventService {
                 .forEach(event -> latestEvents.add(new EventPreviewDto(event)));
         return latestEvents;
     }
-
+    
 }

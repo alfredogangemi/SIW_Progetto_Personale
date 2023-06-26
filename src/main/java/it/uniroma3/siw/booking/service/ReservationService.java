@@ -66,4 +66,8 @@ public class ReservationService {
     public void deleteById(Long id) {
         reservationRepository.deleteById(id);
     }
+
+    public boolean existByEvent(Event event) {
+        return reservationRepository.existsByEvent(event);
+    }
 }

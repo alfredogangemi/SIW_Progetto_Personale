@@ -25,4 +25,6 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
     List<Reservation> findReservationsByUserAndEventDateBefore(@Param("user") User user, @Param("currentDate") LocalDateTime currentDate);
 
     List<Reservation> findAllByEvent(Event event);
+
+    boolean existsByEvent(Event event);
 }

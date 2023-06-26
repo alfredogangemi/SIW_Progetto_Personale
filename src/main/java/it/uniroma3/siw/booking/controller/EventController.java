@@ -5,6 +5,7 @@ import it.uniroma3.siw.booking.controller.validator.ImageValidator;
 import it.uniroma3.siw.booking.model.Event;
 import it.uniroma3.siw.booking.model.Image;
 import it.uniroma3.siw.booking.service.EventService;
+import it.uniroma3.siw.booking.service.ReservationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
@@ -21,12 +23,15 @@ import java.io.IOException;
 public class EventController {
 
     protected final EventService eventService;
+    protected final ReservationService reservationService;
     protected final ImageValidator imageValidator;
     protected final EventValidator eventValidator;
 
     @Autowired
-    public EventController(EventService eventService, ImageValidator imageValidator, EventValidator eventValidator) {
+    public EventController(EventService eventService, ReservationService reservationService, ImageValidator imageValidator,
+            EventValidator eventValidator) {
         this.eventService = eventService;
+        this.reservationService = reservationService;
         this.imageValidator = imageValidator;
         this.eventValidator = eventValidator;
     }
@@ -85,9 +90,15 @@ public class EventController {
     }
 
     @PostMapping("/admin/event/delete")
-    public String delete(@ModelAttribute("id") Long id) {
+    public String delete(@ModelAttribute("id") Long id, RedirectAttributes redirectAttributes) {
         if (id != null && eventService.existsById(id)) {
-            //TODO -> Eliminare tutte le prenotazioni annesse?
+            Event event = eventService.findEventById(id);
+            if (reservationService.existByEvent(event)) {
+                log.warn("Impossibile eliminare l'evento {} --- (#{}) perchè sono presenti delle prenotazioni", event.getName(), event.getId());
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "Impossibile eliminare questo evento in quanto sono presenti una o più prenotazioni.");
+                return "redirect:/event/" + id;
+            }
             eventService.deleteById(id);
         } else {
             log.warn("Errore durante l'emininazione dell'evento con id {}", id);

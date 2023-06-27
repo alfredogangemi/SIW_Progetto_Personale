@@ -1,5 +1,6 @@
 package it.uniroma3.siw.booking.controller;
 
+import it.uniroma3.siw.booking.constants.Role;
 import it.uniroma3.siw.booking.controller.validator.EventValidator;
 import it.uniroma3.siw.booking.controller.validator.ImageValidator;
 import it.uniroma3.siw.booking.model.Event;
@@ -18,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
-import static it.uniroma3.siw.booking.model.Credentials.ADMIN_ROLE;
 
 @Controller
 @Slf4j
@@ -90,7 +90,8 @@ public class EventController {
     public String events(Model model) {
         String role = globalController.getRole();
         Iterable<Event> events;
-        if (ADMIN_ROLE.equals(role)) {
+        if (Role.ADMIN.name()
+                .equals(role)) {
             events = eventService.findAll(); //admin visualizza anche gli eventi passati
         } else {
             events = eventService.findAllByDateAfter();

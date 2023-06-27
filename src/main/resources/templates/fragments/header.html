@@ -36,7 +36,7 @@
                             <a class="nav-link active" href="/myReservations">Le tue prenotazioni</a>
                         </li>
                         <li th:if="${userDetails}" class="nav-item">
-                            <a th:text="${userDetails.username}" class="nav-link" href=""></a>
+                            <a th:text="${userDetails.username}" class="nav-link" href="/myReservations"></a>
                         </li>
                         <li th:if="${userDetails}" class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>

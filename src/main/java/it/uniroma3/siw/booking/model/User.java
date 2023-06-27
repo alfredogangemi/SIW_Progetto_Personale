@@ -12,12 +12,11 @@ public class User {
 
     @Column(nullable = false)
     private Long id;
-    @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
     private String surname;
-    @Column(nullable = false)
     private String email;
+    @OneToOne
+    private Credentials credentials;
 
 
     @Override

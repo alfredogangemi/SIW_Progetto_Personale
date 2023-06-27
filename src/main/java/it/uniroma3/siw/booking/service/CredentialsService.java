@@ -1,5 +1,6 @@
 package it.uniroma3.siw.booking.service;
 
+import it.uniroma3.siw.booking.constants.Role;
 import it.uniroma3.siw.booking.model.Credentials;
 import it.uniroma3.siw.booking.repository.CredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,14 @@ import java.util.Optional;
 @Service
 public class CredentialsService {
 
-    @Autowired
     protected PasswordEncoder passwordEncoder;
+    protected final CredentialsRepository credentialsRepository;
 
     @Autowired
-    protected CredentialsRepository credentialsRepository;
+    public CredentialsService(CredentialsRepository credentialsRepository, PasswordEncoder passwordEncoder) {
+        this.credentialsRepository = credentialsRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Transactional
     public Credentials getCredentials(Long id) {
@@ -32,7 +36,7 @@ public class CredentialsService {
 
     @Transactional
     public Credentials saveCredentials(Credentials credentials) {
-        credentials.setRole(Credentials.DEFAULT_ROLE);
+        credentials.setRole(Role.DEFAULT);
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
     }

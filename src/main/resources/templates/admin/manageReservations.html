@@ -34,7 +34,9 @@
             </thead>
             <tbody>
             <tr th:each="reservation : ${reservations}">
-                <td th:text="${reservation.user.name} + ' ' + ${reservation.user.surname} ">Utente</td>
+                <td th:text="${(reservation.user.name != null && reservation.user.name != '' && reservation.user.surname != null && reservation.user.surname != '') ? (reservation.user.name + ' ' + reservation.user.surname) : (reservation.user.credentials.username + ' (OAuth)')}">
+                    Utente
+                </td>
                 <td th:text="${reservation.id}">id</td>
 
                 <td th:text="${#temporals.format(reservation.creationDate, 'dd/MM/yyyy HH:mm')}">Data</td>

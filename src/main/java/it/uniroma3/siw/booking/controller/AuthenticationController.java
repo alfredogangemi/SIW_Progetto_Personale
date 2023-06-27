@@ -1,15 +1,19 @@
 package it.uniroma3.siw.booking.controller;
 
+import it.uniroma3.siw.booking.constants.AuthenticationProvider;
 import it.uniroma3.siw.booking.controller.validator.CredentialsValidator;
 import it.uniroma3.siw.booking.controller.validator.UserValidator;
 import it.uniroma3.siw.booking.dto.EventPreviewDto;
 import it.uniroma3.siw.booking.model.Credentials;
 import it.uniroma3.siw.booking.model.User;
+import it.uniroma3.siw.booking.oauth.CustomOAuth2User;
 import it.uniroma3.siw.booking.service.CredentialsService;
 import it.uniroma3.siw.booking.service.EventService;
 import it.uniroma3.siw.booking.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -61,13 +65,9 @@ public class AuthenticationController {
         return "index";
     }
 
-    @GetMapping(value = "/success")
+    @GetMapping(value = {"login/oauth2/user", "/success"})
     public String defaultAfterLogin(Model model) {
         log.info("Executing login...");
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        log.info("User {} successfully logged in.", userDetails.getUsername());
         return index(model);
     }
 
@@ -83,16 +83,30 @@ public class AuthenticationController {
         }
         userService.saveUser(user);
         credentials.setUser(user);
+        credentials.setOAuthProvider(AuthenticationProvider.LOCAL);
         credentialsService.saveCredentials(credentials);
+        user.setCredentials(credentials);
+        userService.saveUser(user);
         model.addAttribute("user", user);
         return "signUpSuccessfully";
     }
 
     public User getCurrentUser() {
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        Credentials credentials = credentialsService.getCredentials(user.getUsername());
-        return credentials.getUser();
+        Authentication authentication = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            Object user = SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getPrincipal();
+            if (user instanceof UserDetails userDetails) {
+                return credentialsService.getCredentials(userDetails.getUsername())
+                        .getUser();
+            } else if (user instanceof CustomOAuth2User loggedOAuth2User) {
+                String username = loggedOAuth2User.getLogin();
+                return credentialsService.getCredentials(username)
+                        .getUser();
+            }
+        }
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package it.uniroma3.siw.booking.model;
 
+import it.uniroma3.siw.booking.constants.AuthenticationProvider;
+import it.uniroma3.siw.booking.constants.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,17 +9,23 @@ import lombok.Data;
 @Data
 public class Credentials {
 
-    public static final String DEFAULT_ROLE = "DEFAULT";
-    public static final String ADMIN_ROLE = "ADMIN";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String username;
+
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private AuthenticationProvider oAuthProvider;
 
 
 }

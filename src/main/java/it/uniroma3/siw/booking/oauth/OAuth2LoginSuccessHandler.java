@@ -26,15 +26,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+        log.info("login with oAuth..");
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         String loginName = oAuth2User.getLogin();
-        String fullName = oAuth2User.getFullName();
-        String name = oAuth2User.getName();
-        String email = oAuth2User.getEmail();
-        log.info("Login name -> {} ----- Full name {} ----- name: {} ----- email {}", loginName, fullName, name, email);
-        log.info("Attributes {}", oAuth2User.getAttributes());
+        log.debug("Attributes {}", oAuth2User.getAttributes());
         boolean exists = userService.existsByUsername(loginName);
         if (!exists) {
+            log.info("Creating new user {} from oAuth ", loginName);
             userService.registerOAuthUser(oAuth2User);
         }
         log.info("redirecting to home....");
